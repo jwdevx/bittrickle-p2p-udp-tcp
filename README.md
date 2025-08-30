@@ -2,14 +2,12 @@
 
 A lightweight, **permissioned P2P file‑sharing app** in Python. A small central server provides **authentication & discovery** over UDP; peers **transfer files directly** over TCP. Built for clarity to showcase systems, networking, and concurrency skills—without unnecessary complexity.
 
----
 
 ## Overview
 - **Client–server + peer‑to‑peer**: the server authenticates users and tracks which peer has which file; clients publish/search and fetch files directly from peers.
 - **Protocols**: UDP for control (client⇄server), TCP for data (peer⇄peer).
 - **Concurrency**: a multithreaded client keeps the shell responsive while sending heartbeats and serving incoming downloads.
 
----
 
 ## Code Layout & Dependencies
 ```
@@ -20,7 +18,6 @@ A lightweight, **permissioned P2P file‑sharing app** in Python. A small centra
 - **Language**: Python 3
 - **Stdlib only**: `socket`, `threading`, `argparse`, `os`, `time`
 
----
 
 ## How It Works
 **Server (single‑threaded UDP):**
@@ -37,14 +34,12 @@ A lightweight, **permissioned P2P file‑sharing app** in Python. A small centra
 **End‑to‑end flow example:**
 1) A publishes `X.mp3`. 2) B searches and learns A has it. 3) B opens **TCP** to A and downloads it.
 
----
 
 ## Data Structures (Server)
 - **Credentials**: `username → password`
 - **Active clients**: `username → { udp_address, tcp_address, last_heartbeat }`
 - **Published files**: `filename → { usernames… }`  (who currently publishes each file)
 
----
 
 ## Application Protocol (Control Plane over UDP)
 **Core Commands (Client Shell)**
@@ -61,10 +56,8 @@ A lightweight, **permissioned P2P file‑sharing app** in Python. A small centra
 - `OK ...` or `Error ...` messages for all commands
 - For `get`: `200 <peer_ip> <tcp_port>` so the client can open a TCP connection to the peer
 
----
 
 ## Quickstart
-> Assumes Python 3.x and local demo on one machine (loopback).
 
 1) **Prepare credentials** (server working dir)
 ```
@@ -83,7 +76,6 @@ python3 client.py <server_port>
 - Log in using an entry from `server/credentials.txt`.
 - Start multiple clients in separate terminals to see peer‑to‑peer transfers.
 
----
 
 ## Known Limitations (and Possible Extensions)
 - **Concurrency bound**: inbound transfers handled by a **5‑worker** pool.
@@ -93,7 +85,6 @@ python3 client.py <server_port>
 
 **Future work**: TLS, resumable/chunked downloads, richer search, rate limiting, persistent server state, tests & CI.
 
----
 
 ## What This Demonstrates
 - Networking fundamentals (custom app protocol over UDP/TCP)
